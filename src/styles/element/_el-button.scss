@@ -1,0 +1,18 @@
+@import "../settings/index";
+
+.el-button {
+  height: 40px;
+  border: none;
+  border-radius: 76px;
+  outline: none;
+  width: 100%;
+  background: $pink-color;
+  color: #fff;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &--text {
+    background: transparent;
+    color: $dark-color;
+  }
+}

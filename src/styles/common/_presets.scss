@@ -1,0 +1,75 @@
+@import "../settings/index";
+@import "../tools/index";
+
+/** List items */
+@include block('list-items', 'component') {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  > li {
+    padding: 0;
+  }
+
+  @include modifier('inline') {
+    @include row;
+    margin-left: -$indent-small;
+    margin-right: -$indent-small;
+    flex-wrap: wrap;
+
+    > li {
+      padding-left: $indent-small;
+      padding-right: $indent-small;
+    }
+  }
+
+  @include modifier('centered') {
+    align-items: center;
+  }
+}
+
+/** Link with icon */
+@include block('link-icon', 'utility') {
+  .md-icon{
+    color: inherit;
+    font-size: inherit;
+    position: relative;
+    top: 4px;
+    margin-right: $indent-xsmall;
+
+    &,
+    * {
+      fill: $link-text;
+    }
+  }
+}
+
+/** Menu divider */
+@include block('menu-divider', 'utility') {
+  background-color: transparentize(white, .88) !important;
+
+  @include modifier('shifted') {
+    margin-left: $indent-medium;
+    width: calc(100% - #{$indent-medium}) !important;
+  }
+}
+
+@include block('hidden', 'utility') {
+  display: none;
+}
+
+@include block('white-box', 'utility') {
+  background-color: white;
+  padding: $indent-medium;
+  box-shadow: $box-shadow;
+  border-radius: $radius-medium;
+  margin-bottom: $indent-medium;
+
+  @include media-query(sm-and-down) {
+    margin: {
+      left: -$indent-medium;
+      right: -$indent-medium;
+    };
+    border-radius: 0;
+  }
+}

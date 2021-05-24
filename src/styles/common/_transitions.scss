@@ -1,0 +1,178 @@
+ @import "../tools/mixins";
+
+/** Generic */
+@include block('list-transition', 'utility') {
+  &-move {
+    transition: height $primary-transition,
+      top $primary-transition,
+      transform $primary-transition !important;
+  }
+  &-enter, &-leave-to {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  &-leave-active {
+    position: absolute !important;
+    width: 100%;
+  }
+}
+
+/** Generic */
+@include block('scale-bounce-transition', 'utility') {
+  &-enter-active,
+  &-leave-active {
+    transition: transform .2s cubic-bezier(0.46, 0.03, 0.54, 1.62);
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  &-enter,
+  &-leave-to {
+    transform: scale(0);
+  }
+}
+
+/** slide in and out transitions */
+@include block('slide-in-x-transition', 'utility') {
+  &-enter-active,
+  &-leave-active {
+    transition: all .2s;
+  }
+  &-enter,
+  &-leave-active {
+    opacity: 0;
+  }
+  &-enter {
+    transform: translateX(40px);
+  }
+  &-leave-active {
+    transform: translateX(-40px);
+  }
+}
+
+@include block('slide-out-x-transition', 'utility') {
+  &-enter-active,
+  &-leave-active {
+    transition: all .2s;
+  }
+  &-enter,
+  &-leave-active {
+    opacity: 0;
+  }
+  &-enter {
+    transform: translateX(-40px);
+  }
+  &-leave-active {
+    transform: translateX(40px);
+  }
+}
+@include block('slide-in-y-transition', 'utility') {
+  &-enter-active,
+  &-leave-active {
+    transition: all .2s;
+  }
+  &-enter,
+  &-leave-active {
+    opacity: 0;
+  }
+  &-enter {
+    transform: translateY(40px);
+  }
+  &-leave-active {
+    transform: translateY(-40px);
+  }
+}
+
+@include block('slide-out-y-transition', 'utility') {
+  &-enter-active,
+  &-leave-active {
+    transition: all .2s;
+  }
+  &-enter,
+  &-leave-active {
+    opacity: 0;
+  }
+  &-enter {
+    transform: translateY(-40px);
+  }
+  &-leave-active {
+    transform: translateY(40px);
+  }
+}
+
+/** Page transition */
+.page-enter-active {
+  transition: opacity .3s;
+  will-change: opacity;
+}
+
+.page-enter, .page-leave-active {
+  opacity: 0;
+}
+
+/** Loading transition */
+.loading-enter-active, .loading-leave-active {
+  transition: opacity .3s;
+  will-change: opacity;
+}
+
+.loading-enter, .loading-leave-active {
+  opacity: 0;
+}
+
+
+/** Auth Form transition */
+.auth-form-enter-active,
+.auth-form-leave-active,
+.auth-form-reverse-enter-active,
+.auth-form-reverse-leave-active {
+  transition: all .3s $primary-transition-function;
+}
+.auth-form-enter,
+.auth-form-leave-active,
+.auth-form-reverse-enter,
+.auth-form-reverse-leave-active{
+  opacity: 0;
+}
+.auth-form-enter,
+.auth-form-reverse-leave-active {
+  transform: translateX(300px);
+}
+.auth-form-reverse-enter,
+.auth-form-leave-active {
+  transform: translateX(-300px);
+}
+
+
+/** Mobile Menu */
+@include block('mobile-menu-transition', 'utility') {
+  &-enter-active,
+  &-leave-active {
+    transition: transform .295s $primary-transition-function;
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  &-enter,
+  &-leave-to {
+    transform: translateX(0);
+  }
+}
+
+
+@include block('messages-transition-group', 'utility') {
+  &-enter-active,
+  &-leave-active {
+    transition: all .2s cubic-bezier(0.46, 0.03, 0.54, 1.62);
+    transform-origin: right top;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+    transform: translate(100%, 0);
+  }
+}

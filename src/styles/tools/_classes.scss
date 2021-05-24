@@ -1,0 +1,12 @@
+@import "../settings/_variables";
+@import "~@rabota/rabotify/src/styles/tools/_classes";
+
+%col {
+  padding: 0 $indent-medium;
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+%btn-reset {
+  margin: 0 !important;
+}

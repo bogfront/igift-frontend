@@ -1,0 +1,30 @@
+@keyframes slide-in-x-animation {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slow-zoom-animation {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.5);
+  }
+}
+
+@keyframes small-slide-x-animation {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
