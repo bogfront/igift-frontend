@@ -11,49 +11,109 @@ export default {
       email: '',
       phone: '',
       password: ''
+    },
+
+    rules: {
+      name: [
+        { min: 2, message: 'Минимальная длина имени 2', trigger: 'blur' }
+      ],
+
+      secondName: [
+        { min: 2, message: 'Минимальная длина фамилии 2', trigger: 'blur' }
+      ],
+
+      email: [
+        { required: true, message: 'Это поле должно быть заполнено', trigger: 'blur' },
+        { type: 'email', message: 'Неправильно введен email', trigger: ['blur'] }
+      ],
+
+      password: [
+        { required: true, message: 'Введите пароль', trigger: 'blur' },
+        { min: 8, message: 'Минимальная длина пароля: 8 символов', trigger: 'blur' }
+      ]
     }
   }),
 
   methods: {
     async submit () {
-      await auth.register(this.registerForm)
+      try {
+        this.$refs['regForm'].validate((valid) => {
+          if (!valid) {
+            return false;
+          }
+        });
+
+        await auth.register(this.registerForm)
+      } catch (error) {
+
+      }
     }
   }
 }
 </script>
 
 <template>
-  <el-form class="auth-login" ref="form" :model="registerForm">
-    <el-form-item label="Имя">
+  <el-form
+    class="auth-register"
+    ref="regForm"
+    :rules="rules"
+    :model="registerForm"
+  >
+    <el-form-item label="Имя" prop="name">
       <el-input v-model="registerForm.name"></el-input>
     </el-form-item>
 
-    <el-form-item label="Фамилия">
+    <el-form-item label="Фамилия" prop="secondName">
       <el-input v-model="registerForm.secondName"></el-input>
     </el-form-item>
 
-    <el-form-item label="Email" required>
+    <el-form-item label="Email" prop="email">
       <el-input v-model="registerForm.email"></el-input>
     </el-form-item>
 
     <el-form-item label="Телефон">
-      <el-input v-model="registerForm.phone"></el-input>
+      <el-input
+        type="tel"
+        v-model="registerForm.phone"
+      />
     </el-form-item>
 
-    <el-form-item label="Пароль" required>
-      <el-input type="password" v-model="registerForm.password"></el-input>
+    <el-form-item label="Пароль" prop="password">
+      <el-input
+        type="password"
+        v-model="registerForm.password"></el-input>
     </el-form-item>
 
-    <div>Пожалуйста, указывайте Ваши настоящие данные. По ним мы будем идентифицировать Ваши посылки.</div>
+    <div class="auth-register__text auth-register__text_info">* обязательные поля</div>
+
+    <div class="text-center auth-register__text">Пожалуйста, указывайте Ваши настоящие данные. По ним мы будем идентифицировать Ваши посылки.</div>
 
     <el-form-item>
-      <el-button type="primary" @click="submit">Зарегистрироваться</el-button>
+      <el-button
+        class="auth-register__btn"
+        @click="submit"
+      >Зарегистрироваться</el-button>
     </el-form-item>
-
-    <div>Регистрируясь, Вы подтверждаете, что ознакомились с нашим пользовательским соглашением</div>
   </el-form>
 </template>
 
 <style scoped lang="scss">
+@import "../../styles/settings/index";
 
+.auth-register{
+
+  &__text {
+    margin-bottom: $indent-large;
+
+    &_info {
+      color: $gray-color;
+    }
+  }
+
+  &__btn {
+    display: block;
+    width: 250px !important;
+    margin: auto;
+  }
+}
 </style>

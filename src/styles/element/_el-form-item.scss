@@ -1,0 +1,29 @@
+@import "../settings/index";
+
+.el-form-item {
+  position: relative;
+  isolation: isolate;
+  margin-bottom: $indent-medium !important;
+
+  &__label {
+    position: absolute;
+    z-index: 1;
+    left: $indent-medium;
+    top: $indent-small;
+    height: 18px;
+    line-height: 18px !important;
+    font-size: $font-size-small !important;
+
+    &:before {
+      position: absolute;
+      right: -4px;
+      color: inherit !important;
+    }
+  }
+
+  &__error {
+    padding-top: 0 !important;
+    padding-left: 8px;
+    margin-top: -2px;
+  }
+}

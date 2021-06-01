@@ -15,4 +15,13 @@
     background: transparent;
     color: $dark-color;
   }
+
+  &--primary {
+    background: $purple-color;
+  }
+
+  &.is-plain {
+    background: transparent;
+    color: $dark-color;
+  }
 }

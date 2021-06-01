@@ -11,6 +11,8 @@ export default {
   },
 
   data: () => ({
+    step: 0,
+
     loginForm: {
       email: '',
       password: ''
@@ -19,6 +21,10 @@ export default {
 
   methods: {
     async submit () {
+      if (this.step === 0) {
+        this.step++;
+        return;
+      }
       try {
         const { data } = await auth.login(this.loginForm)
 
@@ -34,23 +40,54 @@ export default {
 
 <template>
   <el-form class="auth-login" ref="form" :model="loginForm">
-    <el-form-item label="Email">
+    <el-form-item
+      v-if="step === 0"
+      label="Email или телефон"
+    >
       <el-input v-model="loginForm.email"></el-input>
     </el-form-item>
 
-    <el-form-item label="Пароль">
+    <el-form-item
+      v-if="step === 1"
+      label="Пароль"
+    >
       <el-input
         v-model="loginForm.password"
         type="password"
       />
     </el-form-item>
 
+    <div class="auth-login__forgot">
+      <el-button
+        type="text"
+        class="auth-login__forgot-btn"
+        @click="$router.push({ name: 'forgot' })"
+      >Забыли пароль?</el-button>
+    </div>
+
     <el-form-item>
-      <el-button type="primary" @click="submit">Войти</el-button>
+      <el-button @click="submit">Войти</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <style scoped lang="scss">
+@import "../../styles/settings";
 
+.auth-login {
+
+  &__forgot {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -8px;
+    margin-bottom: $indent-medium;
+  }
+
+  &__forgot-btn {
+    display: inline-block;
+    padding: 0;
+    width: auto !important;
+    text-transform: none !important;
+  }
+}
 </style>

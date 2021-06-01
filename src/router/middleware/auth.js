@@ -5,7 +5,7 @@ export default async function auth ({ next, store }){
 
   if (!store.getters.auth.loggedIn){
     return next({
-      name: 'login'
+      name: 'auth-main'
     })
   }
   return next()

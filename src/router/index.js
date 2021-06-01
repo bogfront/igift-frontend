@@ -4,7 +4,9 @@ import Auth from '../pages/Auth.page.vue';
 import Dashboard from '../pages/Dashboard.page.vue';
 import CreateOrder from '../pages/CreateOrder.page.vue'
 
+import AuthMain from "../components/auth/AuthMain.vue";
 import AuthLogin from "../components/auth/AuthLogin.vue";
+import AuthForgot from "../components/auth/AuthForgot.vue";
 import AuthRegister from "../components/auth/AuthRegister.vue";
 import CreateOrderProducts from '../components/create-order/CreateOrderProducts.vue'
 import CreateOrderProductsSubmit from '../components/create-order/CreateOrderProductsSubmit.vue'
@@ -76,6 +78,17 @@ const routes = [
 
     children: [
       {
+        path: '/auth/main',
+        name: 'auth-main',
+        component: AuthMain,
+        meta: {
+          middleware: [
+            guest
+          ]
+        }
+      },
+
+      {
         path: '/auth/login',
         name: 'login',
         component: AuthLogin,
@@ -90,6 +103,12 @@ const routes = [
         path: '/auth/register',
         name: 'register',
         component: AuthRegister
+      },
+
+      {
+        path: '/auth/forgot',
+        name: 'forgot',
+        component: AuthForgot
       },
     ]
   },

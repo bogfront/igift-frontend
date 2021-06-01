@@ -6,13 +6,25 @@
 }
 
 a {
-  color: $dark-color;
+  color: $pink-color;
+  text-decoration: none;
 
   &:hover {
     color: $pink-color;
   }
 }
 
+p {
+  font-size: $font-size-caption;
+  color: $dark-color
+}
+
 .text-center {
   text-align: center;
+}
+
+.title_small {
+  font-size: $font-size-body;
+  font-weight: $font-weight-semi;
+  margin-bottom: $indent-medium;
 }

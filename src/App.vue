@@ -17,4 +17,8 @@ export default {
 
 <style lang="scss">
 @import "./styles/element/index";
+
+#app {
+  padding-top: 64px;
+}
 </style>
