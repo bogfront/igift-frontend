@@ -1,11 +1,13 @@
 <script>
 import DashboardOrders from "../components/dashboard/DashboardOrders.vue";
+import DashboardAddresses from "../components/dashboard/DashboardAddresses.vue";
 
 export default {
   name: "Dashboard",
 
   components: {
-    DashboardOrders
+    DashboardOrders,
+    DashboardAddresses
   }
 }
 </script>
@@ -19,12 +21,14 @@ export default {
       >+ Создать новый заказ</el-button>
     </div>
 
+    <DashboardAddresses />
+
     <DashboardOrders />
   </div>
 </template>
 
 <style scoped lang="scss">
-
+@import "../styles/settings";
 
 .dashboard {
 
@@ -35,6 +39,7 @@ export default {
 
   &__new-btn {
     max-width: 300px;
+    margin-bottom: $indent-large;
   }
 }
 </style>
