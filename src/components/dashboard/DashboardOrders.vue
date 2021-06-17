@@ -43,7 +43,7 @@ export default {
     class="dashboard-orders__order"
   >
     <div class="dashboard-orders__order-flex">
-      <div class="dashboard-orders__order-small">№{{ index }}</div>
+      <div class="dashboard-orders__order-small">№ {{ order.number }}</div>
       <div class="dashboard-orders__order-small">от {{ order.createdAt }}</div>
     </div>
 
