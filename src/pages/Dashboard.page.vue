@@ -17,15 +17,7 @@ export default {
   }),
 
   mounted () {
-    this.getOrders()
-  },
-
-  methods: {
-    async getOrders () {
-      const { data } = await api.orders.getOrders()
-
-      this.orders = data;
-    }
+    this.$store.dispatch('loadOrders');
   }
 }
 </script>
@@ -41,7 +33,7 @@ export default {
 
     <DashboardAddresses />
 
-    <DashboardOrders :orders="orders" />
+    <DashboardOrders />
   </div>
 </template>
 

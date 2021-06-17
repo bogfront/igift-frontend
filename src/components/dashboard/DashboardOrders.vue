@@ -1,19 +1,30 @@
 <script>
-import { STATUSES_RUS } from "../../utils/constants";
+import { STATUSES, STATUSES_RUS } from "../../utils/constants";
 
 export default {
   name: "DashboardOrders",
 
-  props: {
-    orders: {
-      type: Array,
-      default: () => ([])
+  data: () => ({
+    STATUSES,
+    STATUSES_RUS
+  }),
+
+  computed: {
+    orders () {
+      return this.$store.getters.orders;
+    },
+
+    status () {
+      return this.$store.getters.status;
     }
   },
 
-  data: () => ({
-    STATUSES_RUS
-  })
+  methods: {
+    setStatus (status) {
+      this.$store.commit('setOrderStatusFilter', status);
+      this.$store.dispatch('loadOrders');
+    }
+  }
 }
 </script>
 
@@ -27,14 +38,36 @@ export default {
 
   <div class="dashboard-orders__filter">
     <el-button
-      class="dashboard-orders__filter-btn dashboard-orders__filter-btn_active"
+      :class="{
+        'dashboard-orders__filter-btn': true,
+        'dashboard-orders__filter-btn_active': status === ''
+      }"
+      @click="setStatus('')"
     >Все заказы</el-button>
 
-    <el-button class="dashboard-orders__filter-btn">В работе</el-button>
+    <el-button
+      :class="{
+        'dashboard-orders__filter-btn': true,
+        'dashboard-orders__filter-btn_active': status === STATUSES.WORKING
+      }"
+      @click="setStatus(STATUSES.WORKING)"
+    >В работе</el-button>
 
-    <el-button class="dashboard-orders__filter-btn">Завершенные</el-button>
+    <el-button
+      :class="{
+        'dashboard-orders__filter-btn': true,
+        'dashboard-orders__filter-btn_active': status === STATUSES.FINISHED
+      }"
+      @click="setStatus(STATUSES.FINISHED)"
+    >Завершенные</el-button>
 
-    <el-button class="dashboard-orders__filter-btn">Черновики</el-button>
+    <el-button
+      :class="{
+        'dashboard-orders__filter-btn': true,
+        'dashboard-orders__filter-btn_active': status === STATUSES.DRAFT
+      }"
+      @click="setStatus(STATUSES.DRAFT)"
+    >Черновики</el-button>
   </div>
 
   <div

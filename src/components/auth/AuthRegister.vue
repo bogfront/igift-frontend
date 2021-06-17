@@ -44,6 +44,7 @@ export default {
         });
 
         await auth.register(this.registerForm)
+        await this.$router.push({ name: 'login' });
       } catch (error) {
 
       }

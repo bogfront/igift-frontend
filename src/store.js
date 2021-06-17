@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import { useCookies } from '@vueuse/integrations'
 import * as api from './api'
 import { $axios } from './utils/axios';
+import de from "element-plus/packages/locale/lang/de";
 
 const cookies = useCookies(['locale']);
 
@@ -18,7 +19,10 @@ const store = createStore({
       designId: 1,
       designComment: '',
       recipient: {}
-    }
+    },
+
+    orderStatusFilter: '',
+    orders: []
   },
 
   getters: {
@@ -28,6 +32,14 @@ const store = createStore({
 
     orderForm (state) {
       return state.orderForm;
+    },
+
+    status (state) {
+      return state.orderStatusFilter;
+    },
+
+    orders (state) {
+      return state.orders;
     }
   },
 
@@ -55,6 +67,14 @@ const store = createStore({
 
     setRecipient (state, recipient) {
       state.orderForm.recipient = recipient;
+    },
+
+    setOrderStatusFilter (state, status) {
+      state.orderStatusFilter = status;
+    },
+
+    setOrders (state, orders) {
+      state.orders = orders;
     }
   },
 
@@ -94,6 +114,22 @@ const store = createStore({
 
         await api.orders.create(this.$axios, orderForm);
 
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+
+    async loadOrders ({ state, commit }) {
+      try {
+        const params = {};
+        if (state.orderStatusFilter) {
+          params.status = state.orderStatusFilter;
+        }
+
+        const { data } = await api.orders.getOrders(params);
+
+        commit('setOrders', data);
       } catch (error) {
         console.error(error);
       }
