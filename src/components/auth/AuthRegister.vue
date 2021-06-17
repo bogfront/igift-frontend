@@ -1,5 +1,6 @@
 <script>
 import { auth } from "../../api";
+import {ElNotification} from "element-plus";
 
 export default {
   name: "AuthRegister",
@@ -46,7 +47,14 @@ export default {
         await auth.register(this.registerForm)
         await this.$router.push({ name: 'login' });
       } catch (error) {
+        ElNotification({
+          title: 'Ошибка регистрации',
+          message: 'Данные при регистрации заполнены неверно',
+          duration: 3000,
+          position: 'bottom-right'
+        })
 
+        console.error(error);
       }
     }
   }

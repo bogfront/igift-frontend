@@ -1,4 +1,5 @@
 <script>
+import { ElNotification } from 'element-plus';
 import { auth } from "../../api";
 import { useCookies } from '@vueuse/integrations'
 
@@ -31,6 +32,14 @@ export default {
         this.cookies.set('access_token', data.access_token);
         await this.$router.push({ name: 'dashboard' });
       } catch (error) {
+
+        ElNotification({
+          title: 'Неудалось авторизоваться',
+          message: 'Неверно указана пара логин/пароль',
+          duration: 3000,
+          position: 'bottom-right'
+        })
+
         console.error(error);
       }
     }

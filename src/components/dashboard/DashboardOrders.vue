@@ -1,5 +1,6 @@
 <script>
 import { STATUSES, STATUSES_RUS } from "../../utils/constants";
+import { formatDate } from "../../utils/date";
 
 export default {
   name: "DashboardOrders",
@@ -23,6 +24,10 @@ export default {
     setStatus (status) {
       this.$store.commit('setOrderStatusFilter', status);
       this.$store.dispatch('loadOrders');
+    },
+
+    getDate (date) {
+      return formatDate(new Date(date));
     }
   }
 }
@@ -77,12 +82,15 @@ export default {
   >
     <div class="dashboard-orders__order-flex">
       <div class="dashboard-orders__order-small">№ {{ order.number }}</div>
-      <div class="dashboard-orders__order-small">от {{ order.createdAt }}</div>
+      <div class="dashboard-orders__order-small">от {{ getDate(order.createdAt) }}</div>
     </div>
 
     <div class="dashboard-orders__order-flex">
       <div class="dashboard-orders__order-small">{{ STATUSES_RUS[order.status] }}</div>
-      <div class="dashboard-orders__order-small">15.03.2020</div>
+      <div
+        v-if="false"
+        class="dashboard-orders__order-small"
+      >15.03.2020</div>
     </div>
 
     <div
