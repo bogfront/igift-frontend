@@ -1,4 +1,6 @@
 <script>
+import copy from 'copy-to-clipboard';
+
 export default {
   name: "DashboardAddresses",
 
@@ -16,7 +18,13 @@ export default {
         developing: true
       }
     ]
-  })
+  }),
+
+  methods: {
+    copy (item) {
+      return copy(item);
+    }
+  }
 }
 </script>
 
@@ -44,6 +52,7 @@ export default {
           v-if="!address.developing"
           type="text"
           class="dashboard-addresses__item-btn"
+          @click="copy(address.address)"
         >Скопировать</el-button>
       </div>
 
@@ -57,6 +66,7 @@ export default {
         <el-button
           type="text"
           class="dashboard-addresses__item-btn"
+          @click="copy(address.receiver)"
         >Скопировать</el-button>
       </div>
 
@@ -71,6 +81,7 @@ export default {
         <el-button
           type="text"
           class="dashboard-addresses__item-btn"
+          @click="copy(address.phone)"
         >Скопировать</el-button>
       </div>
 
