@@ -1,6 +1,19 @@
 <script>
+import { STATUSES_RUS } from "../../utils/constants";
+
 export default {
-  name: "DashboardOrders"
+  name: "DashboardOrders",
+
+  props: {
+    orders: {
+      type: Array,
+      default: () => ([])
+    }
+  },
+
+  data: () => ({
+    STATUSES_RUS
+  })
 }
 </script>
 
@@ -24,18 +37,25 @@ export default {
     <el-button class="dashboard-orders__filter-btn">Черновики</el-button>
   </div>
 
-  <div class="dashboard-orders__order">
+  <div
+    v-for="(order, index) in orders"
+    :key="`order-${index}`"
+    class="dashboard-orders__order"
+  >
     <div class="dashboard-orders__order-flex">
-      <div class="dashboard-orders__order-small">№25620</div>
-      <div class="dashboard-orders__order-small">от 10.03.2020</div>
+      <div class="dashboard-orders__order-small">№{{ index }}</div>
+      <div class="dashboard-orders__order-small">от {{ order.createdAt }}</div>
     </div>
 
     <div class="dashboard-orders__order-flex">
-      <div class="dashboard-orders__order-small">Выполнен</div>
+      <div class="dashboard-orders__order-small">{{ STATUSES_RUS[order.status] }}</div>
       <div class="dashboard-orders__order-small">15.03.2020</div>
     </div>
 
-    <div class="dashboard-orders__order-title">Для Ольги, ул. Советская, д. 16, г. Санкт-Петербург</div>
+    <div
+      v-if="order.delivery"
+      class="dashboard-orders__order-title"
+    >{{ order.delivery.name }}, {{ order.delivery.address }}, г. {{ order.delivery.city }}</div>
 
     <div class="dashboard-orders__order-actions">
       <el-button class="dashboard-orders__order-btn">Редактировать</el-button>

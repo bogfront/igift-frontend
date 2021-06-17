@@ -2,12 +2,30 @@
 import DashboardOrders from "../components/dashboard/DashboardOrders.vue";
 import DashboardAddresses from "../components/dashboard/DashboardAddresses.vue";
 
+import * as api from '../api'
+
 export default {
   name: "Dashboard",
 
   components: {
     DashboardOrders,
     DashboardAddresses
+  },
+
+  data: () => ({
+    orders: []
+  }),
+
+  mounted () {
+    this.getOrders()
+  },
+
+  methods: {
+    async getOrders () {
+      const { data } = await api.orders.getOrders()
+
+      this.orders = data;
+    }
   }
 }
 </script>
@@ -23,7 +41,7 @@ export default {
 
     <DashboardAddresses />
 
-    <DashboardOrders />
+    <DashboardOrders :orders="orders" />
   </div>
 </template>
 

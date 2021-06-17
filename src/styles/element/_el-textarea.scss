@@ -1,0 +1,17 @@
+@import "../settings/index";
+
+.el-textarea {
+
+  &__inner {
+    line-height: 20px !important;
+    border-radius: $radius-medium !important;
+    border: 1px solid $gray-divider !important;
+    background: transparent !important;
+    padding: $indent-large $indent-medium 0 !important;
+  }
+}
+
+.is-error .el-input__inner {
+  border: 1px solid $error-color !important;
+  background: rgba($error-color, 0.08) !important;
+}

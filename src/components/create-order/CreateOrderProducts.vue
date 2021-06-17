@@ -42,21 +42,24 @@ export default {
       >
         <h3 v-if="products.length > 1">Товар {{ index + 1 }}</h3>
 
-        <el-form-item class="create-order__item">
-          <el-input
-            v-model="product.uri"
-            placeholder="Скопируйте URL ссылку на товар"
-          />
+        <el-form-item
+          label="Скопируйте URL ссылку на товар"
+          class="create-order__item"
+        >
+          <el-input v-model="product.uri"/>
         </el-form-item>
 
-        <el-form-item class="create-order__item">
-          <el-input
-            v-model="product.name"
-            placeholder="Название товара"
-          />
+        <el-form-item
+          label="Название товара"
+          class="create-order__item"
+        >
+          <el-input v-model="product.name"/>
         </el-form-item>
 
-        <el-form-item class="create-order__item">
+        <el-form-item
+          labe="Количество товаров"
+          class="create-order__item"
+        >
           <el-select
             v-model="product.count"
             class="create-order__select"
@@ -70,11 +73,13 @@ export default {
           </el-select>
         </el-form-item>
 
-        <el-form-item class="create-order__item">
+        <el-form-item
+          label="Напишите пожелание"
+          class="create-order__item"
+        >
           <el-input
             type="textarea"
             :autosize="{ minRows: 6, maxRows: 10}"
-            placeholder="Напишите пожелание"
             v-model="product.comment">
           </el-input>
         </el-form-item>
@@ -95,7 +100,7 @@ export default {
 </template>
 
 <style scoped lang="scss">
-@import "../../styles/settings/variables";
+@import "../../styles/settings";
 
 .create-order-products {
 

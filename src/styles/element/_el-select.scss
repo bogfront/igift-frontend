@@ -1,6 +1,13 @@
 @import "../settings/index";
 
-.el-button {
-  height: 40px;
-  width: 100% !important;
+.el-select {
+
+  .el-input {
+
+    &__inner {
+      height: 52px !important;
+      line-height: 52px !important;
+      padding: 0 $indent-medium 0 !important;
+    }
+  }
 }
