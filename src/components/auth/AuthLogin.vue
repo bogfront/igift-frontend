@@ -34,7 +34,7 @@ export default {
       } catch (error) {
 
         ElNotification({
-          title: 'Неудалось авторизоваться',
+          title: 'Не удалось авторизоваться',
           message: 'Неверно указана пара логин/пароль',
           duration: 3000,
           position: 'bottom-right'

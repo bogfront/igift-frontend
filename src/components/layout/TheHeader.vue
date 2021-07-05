@@ -33,10 +33,6 @@ export default {
   filter: drop-shadow(0px 4px 16px rgba(0, 0, 0, 0.06));
   margin-bottom: 40px;
 
-  @media (min-width: $media-xs) {
-    height: 102px;
-  }
-
   &__back {
     width: 32px !important;
     height: 32px !important;

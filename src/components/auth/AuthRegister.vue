@@ -1,9 +1,15 @@
 <script>
 import { auth } from "../../api";
 import {ElNotification} from "element-plus";
+import {useCookies} from "@vueuse/integrations";
 
 export default {
   name: "AuthRegister",
+
+  setup () {
+    const cookies = useCookies(['locale']);
+    return { cookies }
+  },
 
   data: () => ({
     registerForm: {
@@ -44,16 +50,27 @@ export default {
           }
         });
 
-        await auth.register(this.registerForm)
-        await this.$router.push({ name: 'login' });
+        const { data } = await auth.register(this.registerForm)
+
+        this.cookies.set('access_token', data.access_token);
+        await this.$router.push({ name: 'dashboard' });
       } catch (error) {
         ElNotification({
           title: 'Ошибка регистрации',
-          message: 'Данные при регистрации заполнены неверно',
+          message: error?.response?.data?.message || 'Не удалось зарегистрировать пользователя',
           duration: 3000,
           position: 'bottom-right'
         })
+      }
+    },
 
+    async checkEmail () {
+      try {
+        const { data } = await auth.checkEmail({
+          email: this.registerForm.email
+        })
+        debugger;
+      } catch (error) {
         console.error(error);
       }
     }
@@ -77,7 +94,10 @@ export default {
     </el-form-item>
 
     <el-form-item label="Email" prop="email">
-      <el-input v-model="registerForm.email"></el-input>
+      <el-input
+        v-model="registerForm.email"
+        @blur="checkEmail"
+      ></el-input>
     </el-form-item>
 
     <el-form-item label="Телефон">

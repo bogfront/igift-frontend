@@ -1,9 +1,12 @@
 <script>
+import * as api from '../../api'
+
 const DATA_PARAMS = {
   uri: '',
   name: '',
   count: 1,
-  comment: ''
+  comment: '',
+  image: ''
 }
 
 export default {
@@ -18,6 +21,19 @@ export default {
   },
 
   methods: {
+    async getProductData (url, index) {
+      try {
+        const { data } = await api.orders.urlMetadata({ url });
+
+        if (data) {
+          this.products[index].name = data.title;
+          this.products[index].image = data.image;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
     addProduct () {
       this.products.push(Object.assign({}, DATA_PARAMS))
     },
@@ -42,11 +58,21 @@ export default {
       >
         <h3 v-if="products.length > 1">Товар {{ index + 1 }}</h3>
 
+        <img
+          v-if="product.image"
+          :src="product.image"
+          :alt="product.name"
+          class="create-order-products__image"
+        >
+
         <el-form-item
           label="Скопируйте URL ссылку на товар"
           class="create-order__item"
         >
-          <el-input v-model="product.uri"/>
+          <el-input
+            v-model="product.uri"
+            @blur="getProductData(product.uri, index)"
+          />
         </el-form-item>
 
         <el-form-item
@@ -106,6 +132,16 @@ export default {
 
   &__add-btn {
     margin-bottom: $indent-medium;
+  }
+
+  &__image {
+    display: block;
+    width: 66px;
+    height: 66px;
+    border: 1px solid #EDEDED;
+    border-radius: 8px;
+    object-fit: contain;
+    margin: 0 auto $indent-medium;
   }
 }
 </style>
