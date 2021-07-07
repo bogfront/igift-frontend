@@ -2,7 +2,8 @@ import { createApp } from 'vue'
 import { ElButton, ElForm,
   ElFormItem, ElInput,
   ElSelect, ElOption,
-  ElRadio, ElNotification
+  ElRadio, ElNotification,
+  ElDrawer
 } from 'element-plus'
 
 import App from './App.vue'
@@ -29,5 +30,6 @@ app.component(ElSelect.name, ElSelect);
 app.component(ElOption.name, ElOption);
 app.component(ElRadio.name, ElRadio);
 app.component(ElNotification.name, ElNotification);
+app.component(ElDrawer.name, ElDrawer);
 
 app.mount('#app')
