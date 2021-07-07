@@ -10,10 +10,26 @@ export default {
       address: '',
       deliveryTime: 1,
       comment: ''
-    }
+    },
+
+    cities: [],
+    loadingCity: false
   }),
 
   methods: {
+    async suggestCity (query) {
+      if (!ymaps) {
+        return;
+      }
+
+      this.loadingCity = true;
+
+      const result = await ymaps.suggest(query);
+      this.cities = result.map(item => item.displayName);
+
+      this.loadingCity = false;
+    },
+
     submitRecipient () {
       this.$store.commit('setRecipient', this.recipient);
 
@@ -43,17 +59,43 @@ export default {
       </el-form-item>
 
       <el-form-item class="create-order__item">
-        <el-input
+        <el-select
           v-model="recipient.city"
+          filterable
+          remote
           placeholder="Город*"
-        />
+          :remote-method="suggestCity"
+          :loading="loadingCity"
+          autocomplete="off"
+          class="create-order__select"
+        >
+          <el-option
+            v-for="(city, index) in cities"
+            :key="index"
+            :label="city"
+            :value="city">
+          </el-option>
+        </el-select>
       </el-form-item>
 
       <el-form-item class="create-order__item">
-        <el-input
+        <el-select
           v-model="recipient.address"
+          filterable
+          remote
           placeholder="Адрес"
-        />
+          :remote-method="suggestCity"
+          :loading="loadingCity"
+          autocomplete="off"
+          class="create-order__select"
+        >
+          <el-option
+            v-for="(city, index) in cities"
+            :key="index"
+            :label="city"
+            :value="city">
+          </el-option>
+        </el-select>
       </el-form-item>
 
       <el-form-item class="create-order__item">

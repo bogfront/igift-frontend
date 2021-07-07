@@ -1,3 +1,5 @@
+export const YANDEX_MAP_SRC = 'https://api-maps.yandex.ru/2.1/?apikey=dffbe29d-b836-45c5-9a5a-691d2ddffc13&lang=ru_RU'
+
 export const STATUSES = {
   CREATED: 'created',
   FINISHED: 'finished',

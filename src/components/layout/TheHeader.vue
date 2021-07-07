@@ -10,7 +10,13 @@ export default {
 
   data: () => ({
     drawer: false
-  })
+  }),
+
+  computed: {
+    isAuth () {
+      return this.$store.getters.auth.loggedIn
+    }
+  }
 }
 </script>
 
@@ -25,6 +31,7 @@ export default {
     </el-button>
 
     <el-button
+      v-if="isAuth"
       plain
       class="header__menu-btn"
       @click="drawer = true"
