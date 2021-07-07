@@ -18,6 +18,7 @@ export default {
 
   mounted () {
     this.addProduct()
+    this.$store.commit('setOrderStep', 0);
   },
 
   methods: {

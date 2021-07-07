@@ -12,6 +12,10 @@ export default {
     }
   },
 
+  mounted () {
+    this.$store.commit('setOrderStep', 1);
+  },
+
   methods: {
     selectDesign (designId) {
       this.$store.commit('setOrderDesign', designId);

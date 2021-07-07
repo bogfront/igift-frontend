@@ -12,6 +12,10 @@ export default {
     }
   },
 
+  mounted () {
+    this.$store.commit('setOrderStep', 1);
+  },
+
   methods: {
     async submit () {
       await this.$store.dispatch('createOrder');

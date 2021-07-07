@@ -1,11 +1,19 @@
 <script>
+import CreateOrderSteps from "../components/create-order/CreateOrderSteps.vue";
+
 export default {
-  name: "CreateOrder"
+  name: "CreateOrder",
+
+  components: {
+    CreateOrderSteps
+  }
 }
 </script>
 
 <template>
   <div class="container">
+    <CreateOrderSteps />
+
     <router-view />
   </div>
 </template>

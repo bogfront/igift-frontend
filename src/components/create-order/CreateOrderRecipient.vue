@@ -16,6 +16,10 @@ export default {
     loadingCity: false
   }),
 
+  mounted () {
+    this.$store.commit('setOrderStep', 1);
+  },
+
   methods: {
     async suggestCity (query) {
       if (!ymaps) {

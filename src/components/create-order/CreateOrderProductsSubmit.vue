@@ -13,6 +13,10 @@ export default {
     giftsCount: 1
   }),
 
+  mounted () {
+    this.$store.commit('setOrderStep', 0);
+  },
+
   methods: {
     submitGiftsCount () {
       this.$store.commit('setGiftsCount', this.giftsCount);
@@ -44,6 +48,38 @@ export default {
   </div>
 </template>
 
-<style scoped lang="scss">
-@import "../../styles/settings/variables";
+<style lang="scss">
+@import "../../styles/settings";
+
+.create-order-steps {
+
+  .el-step__head {
+
+    &.is-finish {
+      color: #fff !important;
+      border-color: #8967FF !important;
+
+      .el-step__icon {
+        background: #8967FF;
+      }
+
+      .el-step__line {
+        background: #8967FF !important;
+      }
+    }
+
+    &.is-process {
+      color: #8967FF !important;
+      border-color: #8967FF !important;
+    }
+
+    &.is-wait {
+
+      .el-step__icon {
+        color: $dark-color;
+        background: #F5F5F5;
+      }
+    }
+  }
+}
 </style>

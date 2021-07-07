@@ -2,7 +2,6 @@ import { createStore } from 'vuex'
 import { useCookies } from '@vueuse/integrations'
 import * as api from './api'
 import { $axios } from './utils/axios';
-import de from "element-plus/packages/locale/lang/de";
 
 const cookies = useCookies(['locale']);
 
@@ -22,7 +21,8 @@ const store = createStore({
     },
 
     orderStatusFilter: '',
-    orders: []
+    orders: [],
+    orderStep: 0
   },
 
   getters: {
@@ -40,6 +40,10 @@ const store = createStore({
 
     orders (state) {
       return state.orders;
+    },
+
+    orderStep (state) {
+      return state.orderStep;
     }
   },
 
@@ -75,6 +79,10 @@ const store = createStore({
 
     setOrders (state, orders) {
       state.orders = orders;
+    },
+
+    setOrderStep (state, step) {
+      state.orderStep = step;
     }
   },
 
