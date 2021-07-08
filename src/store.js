@@ -54,7 +54,8 @@ const store = createStore({
     },
 
     setOrderProducts (state, products) {
-      state.orderForm.products = products;
+      state.orderForm.products = [products];
+      debugger
     },
 
     setGiftsCount (state, count) {
@@ -97,7 +98,7 @@ const store = createStore({
       }
 
       try {
-        const { data } = await api.user.profile(this.$axios);
+        const { data } = await api.user.profile();
 
         commit('setUser', data);
       } catch (error) {
@@ -108,19 +109,19 @@ const store = createStore({
     async createOrder ({state}) {
       try {
         const productsPackage = {
-          productIds: state.orderForm.products.map(product => product.id),
+          productIds: 0,
           designId: state.orderForm.designId,
           commit: state.orderForm.designComment,
           price: 1000
         };
 
         const orderForm = {
-          products: state.products,
+          products: state.orderForm.products,
           packages: [productsPackage],
           recipient: state.orderForm.recipient
         };
 
-        await api.orders.create(this.$axios, orderForm);
+        await api.orders.create(orderForm);
 
       } catch (error) {
         console.error(error);

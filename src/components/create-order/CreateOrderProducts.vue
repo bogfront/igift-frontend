@@ -1,48 +1,82 @@
 <script>
 import * as api from '../../api'
-
-const DATA_PARAMS = {
-  uri: '',
-  name: '',
-  count: 1,
-  comment: '',
-  image: ''
-}
+import {validURL} from "../../utils";
+import {ElNotification} from "element-plus";
 
 export default {
   name: "CreateOrderProducts",
 
-  data: () => ({
-    products: []
-  }),
+  data () {
+    const validateUrl = (rule, value, callback) => {
+      if (!validURL(value)) {
+        callback(new Error('Неверный формат ссылки'))
+      } else {
+        callback()
+      }
+
+    };
+
+    return {
+      productForm: {
+        uri: '',
+        name: '',
+        count: 1,
+        comment: '',
+        image: ''
+      },
+
+      rules: {
+        uri: [
+          { required: true, message: 'Ссылка на товар должна быть указана', trigger: 'blur' },
+          { validator: validateUrl, trigger: 'blur' }
+        ],
+
+        name: [
+          { required: true, message: 'Напишите название товара', trigger: 'blur' }
+        ]
+      }
+    }
+  },
 
   mounted () {
-    this.addProduct()
     this.$store.commit('setOrderStep', 0);
   },
 
   methods: {
-    async getProductData (url, index) {
+    async getProductData (url) {
+      if (!validURL(url)) {
+        return;
+      }
+
       try {
         const { data } = await api.orders.urlMetadata({ url });
 
         if (data) {
-          this.products[index].name = data.title;
-          this.products[index].image = data.image;
+          debugger
+          this.productForm.name = data.title;
+          this.productForm.image = data.image;
         }
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.error(error);
       }
     },
 
-    addProduct () {
-      this.products.push(Object.assign({}, DATA_PARAMS))
-    },
-
     submitProducts () {
-      this.products = this.products.map((product, index) => product.id = index);
-      this.$store.commit('setOrderProducts', this.products);
-      this.$router.push({ name: 'create-order-products-submit' })
+      this.$refs.productForm.validate((valid) => {
+        if (valid) {
+          this.$store.commit('setOrderProducts', this.productForm);
+          this.$router.push({ name: 'create-order-products-submit' })
+        } else {
+          ElNotification({
+            title: 'Неверно заполнена форма',
+            message: 'Проверьте правильность заполнения полей',
+            duration: 3000,
+            position: 'bottom-right'
+          })
+
+          return false;
+        }
+      });
     }
   }
 }
@@ -52,76 +86,66 @@ export default {
   <div class="create-order__content">
     <h2 class="create-order__head">Укажите товары, которые будут в посылке</h2>
 
-    <el-form>
-      <template
-        v-for="(product, index) in products"
-        :key="index"
+    <el-form
+      :model="productForm"
+      :rules="rules"
+      ref="productForm"
+    >
+      <img
+        v-if="productForm.image"
+        :src="productForm.image"
+        :alt="productForm.name"
+        class="create-order-products__image"
       >
-        <h3 v-if="products.length > 1">Товар {{ index + 1 }}</h3>
 
-        <img
-          v-if="product.image"
-          :src="product.image"
-          :alt="product.name"
-          class="create-order-products__image"
+      <el-form-item
+        label="Скопируйте URL ссылку на товар"
+        class="create-order__item"
+        prop="uri"
+      >
+        <el-input
+          v-model="productForm.uri"
+          @blur="getProductData(productForm.uri)"
+        />
+      </el-form-item>
+
+      <el-form-item
+        label="Название товара"
+        class="create-order__item"
+        prop="name"
+      >
+        <el-input v-model="productForm.name"/>
+      </el-form-item>
+
+      <el-form-item
+        labe="Количество товаров"
+        class="create-order__item"
+      >
+        <el-select
+          v-model="productForm.count"
+          class="create-order__select"
         >
+          <el-option
+            v-for="(item, index) in new Array(10)"
+            :key="index"
+            :label="`${index + 1} шт.`"
+            :value="index + 1"
+          ></el-option>
+        </el-select>
+      </el-form-item>
 
-        <el-form-item
-          label="Скопируйте URL ссылку на товар"
-          class="create-order__item"
-        >
-          <el-input
-            v-model="product.uri"
-            @blur="getProductData(product.uri, index)"
-          />
-        </el-form-item>
+      <el-form-item
+        label="Напишите пожелание"
+        class="create-order__item"
+      >
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 6, maxRows: 10}"
+          v-model="productForm.comment">
+        </el-input>
+      </el-form-item>
 
-        <el-form-item
-          label="Название товара"
-          class="create-order__item"
-        >
-          <el-input v-model="product.name"/>
-        </el-form-item>
-
-        <el-form-item
-          labe="Количество товаров"
-          class="create-order__item"
-        >
-          <el-select
-            v-model="product.count"
-            class="create-order__select"
-          >
-            <el-option
-              v-for="(item, index) in new Array(10)"
-              :key="index"
-              :label="`${index + 1} шт.`"
-              :value="index + 1"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item
-          label="Напишите пожелание"
-          class="create-order__item"
-        >
-          <el-input
-            type="textarea"
-            :autosize="{ minRows: 6, maxRows: 10}"
-            v-model="product.comment">
-          </el-input>
-        </el-form-item>
-
-      </template>
-
-      <el-button
-        type="text"
-        class="create-order-products__add-btn"
-        @click="addProduct"
-      >+ Добавить еще товар</el-button>
-
-      <el-button
-        @click="submitProducts"
-      >Продолжить</el-button>
+      <el-button @click="submitProducts">Продолжить</el-button>
     </el-form>
   </div>
 </template>

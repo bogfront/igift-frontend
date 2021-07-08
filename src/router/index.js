@@ -2,7 +2,8 @@ import { createWebHistory, createRouter } from "vue-router";
 
 import Auth from '../pages/Auth.page.vue';
 import Dashboard from '../pages/Dashboard.page.vue';
-import CreateOrder from '../pages/CreateOrder.page.vue'
+import CreateOrder from '../pages/CreateOrder.page.vue';
+import Order from '../pages/Order.page.vue';
 
 import AuthMain from "../components/auth/AuthMain.vue";
 import AuthLogin from "../components/auth/AuthLogin.vue";
@@ -25,6 +26,17 @@ const routes = [
     path: '/',
     name: 'dashboard',
     component: Dashboard,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
+  },
+
+  {
+    path: '/order/:id',
+    name: 'order',
+    component: Order,
     meta: {
       middleware: [
         auth

@@ -3,3 +3,18 @@
 .el-radio__label {
   color: $dark-color !important;
 }
+
+.el-radio__inner {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.el-radio__inner::after {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: $pink-color !important;
+  background: $pink-color !important;
+}

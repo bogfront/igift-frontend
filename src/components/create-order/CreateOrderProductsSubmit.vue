@@ -36,9 +36,9 @@ export default {
         <div>
           <el-radio v-model="giftsCount" :label="1">Это один и тот же подарок</el-radio>
         </div>
-        <div>
-          <el-radio v-model="giftsCount" :label="2">Хочу упаковать несколько подарков</el-radio>
-        </div>
+<!--        <div>-->
+<!--          <el-radio v-model="giftsCount" :label="2">Хочу упаковать несколько подарков</el-radio>-->
+<!--        </div>-->
       </el-form-item>
 
       <el-button
