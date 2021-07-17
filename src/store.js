@@ -55,7 +55,6 @@ const store = createStore({
 
     setOrderProducts (state, products) {
       state.orderForm.products = [products];
-      debugger
     },
 
     setGiftsCount (state, count) {
@@ -120,7 +119,7 @@ const store = createStore({
           packages: [productsPackage],
           recipient: state.orderForm.recipient
         };
-
+        debugger
         await api.orders.create(orderForm);
 
       } catch (error) {

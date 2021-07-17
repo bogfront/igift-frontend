@@ -34,74 +34,81 @@ export default {
 </script>
 
 <template>
-  <div class="dashboard-orders__info">
-    <img src="../../assets/icons/info.svg" alt="attention">
-    <div class="text-center">Товары, запрещенные<br/> к доставке на наш склад</div>
-  </div>
-
-  <h2 class="dashboard-orders__title">Ваши заказы</h2>
-
-  <div class="dashboard-orders__filter">
-    <el-button
-      :class="{
-        'dashboard-orders__filter-btn': true,
-        'dashboard-orders__filter-btn_active': status === ''
-      }"
-      @click="setStatus('')"
-    >Все заказы</el-button>
-
-    <el-button
-      :class="{
-        'dashboard-orders__filter-btn': true,
-        'dashboard-orders__filter-btn_active': status === STATUSES.WORKING
-      }"
-      @click="setStatus(STATUSES.WORKING)"
-    >В работе</el-button>
-
-    <el-button
-      :class="{
-        'dashboard-orders__filter-btn': true,
-        'dashboard-orders__filter-btn_active': status === STATUSES.FINISHED
-      }"
-      @click="setStatus(STATUSES.FINISHED)"
-    >Завершенные</el-button>
-
-    <el-button
-      :class="{
-        'dashboard-orders__filter-btn': true,
-        'dashboard-orders__filter-btn_active': status === STATUSES.DRAFT
-      }"
-      @click="setStatus(STATUSES.DRAFT)"
-    >Черновики</el-button>
-  </div>
-
-  <div
-    v-for="(order, index) in orders"
-    :key="`order-${index}`"
-    class="dashboard-orders__order"
-  >
-    <div class="dashboard-orders__order-flex">
-      <div class="dashboard-orders__order-small">№ {{ order.number }}</div>
-      <div class="dashboard-orders__order-small">от {{ getDate(order.createdAt) }}</div>
+  <div class="dashboard-orders">
+    <div class="dashboard-orders__info">
+      <img src="../../assets/icons/info.svg" alt="attention">
+      <div class="text-center">Товары, запрещенные<br/> к доставке на наш склад</div>
     </div>
 
-    <div class="dashboard-orders__order-flex">
-      <div class="dashboard-orders__order-small">{{ STATUSES_RUS[order.status] }}</div>
-      <div
-        v-if="false"
-        class="dashboard-orders__order-small"
-      >15.03.2020</div>
+    <h2 class="dashboard-orders__title">Ваши заказы</h2>
+
+    <div class="dashboard-orders__filter">
+      <el-button
+        :class="{
+          'dashboard-orders__filter-btn': true,
+          'dashboard-orders__filter-btn_active': status === ''
+        }"
+        @click="setStatus('')"
+      >Все заказы</el-button>
+
+      <el-button
+        :class="{
+          'dashboard-orders__filter-btn': true,
+          'dashboard-orders__filter-btn_active': status === STATUSES.WORKING
+        }"
+        @click="setStatus(STATUSES.WORKING)"
+      >В работе</el-button>
+
+      <el-button
+        :class="{
+          'dashboard-orders__filter-btn': true,
+          'dashboard-orders__filter-btn_active': status === STATUSES.FINISHED
+        }"
+        @click="setStatus(STATUSES.FINISHED)"
+      >Завершенные</el-button>
+
+      <el-button
+        :class="{
+          'dashboard-orders__filter-btn': true,
+          'dashboard-orders__filter-btn_active': status === STATUSES.DRAFT
+        }"
+        @click="setStatus(STATUSES.DRAFT)"
+      >Черновики</el-button>
     </div>
 
     <div
-      v-if="order.delivery"
-      class="dashboard-orders__order-title"
-    >{{ order.delivery.name }}, {{ order.delivery.address }}, г. {{ order.delivery.city }}</div>
+      v-for="(order, index) in orders"
+      :key="`order-${index}`"
+      class="dashboard-orders__order"
+    >
+      <div class="dashboard-orders__order-flex">
+        <router-link
+          :to="`/order/${order._id}`"
+          class="dashboard-orders__order-small"
+        >№ {{ order.number }}</router-link>
+        <div class="dashboard-orders__order-small">от {{ getDate(order.createdAt) }}</div>
+      </div>
 
-    <div class="dashboard-orders__order-actions">
-      <el-button class="dashboard-orders__order-btn">Редактировать</el-button>
+      <div class="dashboard-orders__order-flex">
+        <div class="dashboard-orders__order-small">{{ STATUSES_RUS[order.status] }}</div>
+        <div
+          v-if="false"
+          class="dashboard-orders__order-small"
+        >15.03.2020</div>
+      </div>
 
-      <el-button class="dashboard-orders__order-btn">Отменить</el-button>
+      <div
+        v-if="order.recipient"
+        class="dashboard-orders__order-title"
+      >
+        <b>{{ order.recipient.name }}</b>, {{ order.recipient.address }}, {{ order.recipient.city }}
+      </div>
+
+      <div class="dashboard-orders__order-actions">
+        <el-button class="dashboard-orders__order-btn">Редактировать</el-button>
+
+        <el-button class="dashboard-orders__order-btn">Отменить</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -110,6 +117,8 @@ export default {
 @import "../../styles/settings/index";
 
 .dashboard-orders {
+  max-width: 600px;
+  margin: auto;
 
   &__info {
     font-size: $font-size-body;
