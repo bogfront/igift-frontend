@@ -15,7 +15,7 @@ const store = createStore({
     orderForm: {
       products: [],
       giftsCount: 1,
-      designId: 1,
+      designId: null,
       designComment: '',
       recipient: {}
     },
@@ -119,7 +119,6 @@ const store = createStore({
           packages: [productsPackage],
           recipient: state.orderForm.recipient
         };
-        debugger
         await api.orders.create(orderForm);
 
       } catch (error) {

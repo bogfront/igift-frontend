@@ -48,26 +48,32 @@ export default {
     <h2 class="create-order__head">Кому доставить подарок?</h2>
 
     <el-form>
-      <el-form-item class="create-order__item">
-        <el-input
-          v-model="recipient.name"
-          placeholder="Имя получателя*"
-        />
+      <el-form-item
+        label="Имя получателя"
+        class="create-order__item"
+        required
+      >
+        <el-input v-model="recipient.name"/>
       </el-form-item>
 
-      <el-form-item class="create-order__item">
-        <el-input
-          v-model="recipient.phone"
-          placeholder="Телефон*"
-        />
+      <el-form-item
+        label="Телефон"
+        class="create-order__item"
+        required
+      >
+        <el-input v-model="recipient.phone"/>
       </el-form-item>
 
-      <el-form-item class="create-order__item">
+      <el-form-item
+        label="Город"
+        class="create-order__item"
+        required
+      >
         <el-select
           v-model="recipient.city"
           filterable
           remote
-          placeholder="Город*"
+          placeholder="город получателя"
           :remote-method="suggestCity"
           :loading="loadingCity"
           autocomplete="off"
@@ -82,12 +88,15 @@ export default {
         </el-select>
       </el-form-item>
 
-      <el-form-item class="create-order__item">
+      <el-form-item
+        label="Адрес"
+        class="create-order__item"
+      >
         <el-select
           v-model="recipient.address"
           filterable
           remote
-          placeholder="Адрес"
+          placeholder="улица/дом/квартира"
           :remote-method="suggestCity"
           :loading="loadingCity"
           autocomplete="off"
@@ -102,11 +111,13 @@ export default {
         </el-select>
       </el-form-item>
 
-      <el-form-item class="create-order__item">
+      <el-form-item
+        label="Время доставки"
+        class="create-order__item"
+      >
         <el-select
           v-model="recipient.deliveryTime"
           class="create-order__select"
-          placeholder="Время доставки"
         >
           <el-option
             label="10 - 14"
@@ -125,11 +136,12 @@ export default {
         </el-select>
       </el-form-item>
 
-      <el-form-item class="create-order__item">
+      <el-form-item
+        label="Напишите пожелание"
+        class="create-order__item">
         <el-input
           type="textarea"
           :autosize="{ minRows: 6, maxRows: 10}"
-          placeholder="Напишите пожелание"
           v-model="recipient.comment">
         </el-input>
       </el-form-item>

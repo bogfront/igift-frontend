@@ -69,7 +69,6 @@ export default {
         const { data } = await auth.checkEmail({
           email: this.registerForm.email
         })
-        debugger;
       } catch (error) {
         console.error(error);
       }

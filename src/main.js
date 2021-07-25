@@ -4,7 +4,8 @@ import { ElButton, ElForm,
   ElSelect, ElOption,
   ElRadio, ElNotification,
   ElDrawer, ElSteps,
-  ElStep
+  ElStep, ElDialog,
+  ElCarousel, ElCarouselItem
 } from 'element-plus'
 
 import App from './App.vue'
@@ -34,5 +35,8 @@ app.component(ElNotification.name, ElNotification);
 app.component(ElDrawer.name, ElDrawer);
 app.component(ElSteps.name, ElSteps);
 app.component(ElStep.name, ElStep);
+app.component(ElDialog.name, ElDialog);
+app.component(ElCarousel.name, ElCarousel);
+app.component(ElCarouselItem.name, ElCarouselItem);
 
 app.mount('#app')

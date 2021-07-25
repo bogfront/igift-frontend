@@ -52,7 +52,6 @@ export default {
         const { data } = await api.orders.urlMetadata({ url });
 
         if (data) {
-          debugger
           this.productForm.name = data.title;
           this.productForm.image = data.image;
         }

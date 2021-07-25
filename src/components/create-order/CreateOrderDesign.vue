@@ -1,24 +1,36 @@
 <script>
+import packing from "../../storage/packing.js";
+
 export default {
   name: "CreateOrderDesign",
 
   data: () => ({
-    comment: ''
+    comment: '',
+    showDialog: false,
+    gallery: [],
+    currentDesignId: null
   }),
 
   computed: {
     selectedDesignId () {
       return this.$store.getters.orderForm.designId;
+    },
+
+    packing () {
+      return packing;
     }
   },
 
-  mounted () {
-    this.$store.commit('setOrderStep', 1);
-  },
-
   methods: {
-    selectDesign (designId) {
-      this.$store.commit('setOrderDesign', designId);
+    openDesign (pack) {
+      this.showDialog = true;
+      this.gallery = pack.images;
+      this.currentDesignId = pack.id;
+    },
+
+    selectDesign () {
+      this.$store.commit('setOrderDesign', this.currentDesignId);
+      this.showDialog = false;
     },
 
     submit () {
@@ -40,13 +52,13 @@ export default {
         <div class="create-order-design__grid">
 
           <div
-            v-for="(item, index) in new Array(8)"
-            :key="index"
-            @click="selectDesign(index)"
+            v-for="item in packing"
+            :key="item.id"
+            @click="openDesign(item)"
             class="create-order-design__grid-item"
-            :class="{'create-order-design__grid-item_selected': index === selectedDesignId}"
+            :class="{'create-order-design__grid-item_selected': item.id === selectedDesignId}"
           >
-            <img src="" alt="" class="create-order-design__grid-image">
+            <img :src="item.cover" alt="" class="create-order-design__grid-image">
           </div>
 
         </div>
@@ -73,6 +85,48 @@ export default {
 
     </el-form>
   </div>
+
+  <el-dialog
+    v-model="showDialog"
+    width="30%"
+    center
+  >
+    <el-carousel
+      ref="carousel"
+      :autoplay="false"
+      arrow="always"
+    >
+      <el-carousel-item
+        v-for="(item, index) in gallery"
+        :key="index"
+      >
+        <img
+          :src="item"
+          class="create-order-design__carousel-item"
+        >
+      </el-carousel-item>
+    </el-carousel>
+
+    <div class="create-order-design__carousel-preview">
+      <div
+        v-for="(item, index) in gallery"
+        :key="index"
+        @click="$refs.carousel.setActiveItem(index)"
+      >
+        <img
+          :src="item"
+          alt="">
+      </div>
+    </div>
+
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button
+          @click="selectDesign"
+        >Выбрать</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">
@@ -119,6 +173,32 @@ export default {
         height: 24px;
         background: url('../../assets/icons/selected_24px.svg');
       }
+    }
+  }
+
+  &__grid-image {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__carousel-item {
+    display: block;
+    height: 280px;
+    object-fit: contain;
+    border-radius: $radius-medium;
+    margin: auto;
+  }
+
+  &__carousel-preview {
+    margin-top: $indent-small;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: $indent-small;
+
+    img {
+      width: 100%;
+      object-fit: contain;
     }
   }
 
