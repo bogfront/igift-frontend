@@ -8,3 +8,7 @@ export function validURL(str) {
     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
   return !!pattern.test(str);
 }
+
+export function validateName(str) {
+  return /^[A-Za-zА-Яа-я]+$/.test(str);
+}

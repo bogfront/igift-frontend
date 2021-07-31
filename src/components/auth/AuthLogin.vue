@@ -51,7 +51,7 @@ export default {
   <el-form class="auth-login" ref="form" :model="loginForm">
     <el-form-item
       v-if="step === 0"
-      label="Email или телефон"
+      label="Email"
     >
       <el-input v-model="loginForm.email"></el-input>
     </el-form-item>

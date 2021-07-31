@@ -2,6 +2,7 @@
 import { auth } from "../../api";
 import {ElNotification} from "element-plus";
 import {useCookies} from "@vueuse/integrations";
+import { validateName } from "../../utils";
 
 export default {
   name: "AuthRegister",
@@ -11,45 +12,87 @@ export default {
     return { cookies }
   },
 
-  data: () => ({
-    registerForm: {
-      name: '',
-      secondName: '',
-      email: '',
-      phone: '',
-      password: ''
-    },
+  data () {
+    const checkName = (rule, value, callback) => {
+      if (value.length === 0) {
+        callback()
+      }
 
-    rules: {
-      name: [
-        { min: 2, message: 'Минимальная длина имени 2', trigger: 'blur' }
-      ],
+      if (!validateName(value)) {
+        callback(new Error());
+      }
 
-      secondName: [
-        { min: 2, message: 'Минимальная длина фамилии 2', trigger: 'blur' }
-      ],
+      callback();
+    };
 
-      email: [
-        { required: true, message: 'Это поле должно быть заполнено', trigger: 'blur' },
-        { type: 'email', message: 'Неправильно введен email', trigger: ['blur'] }
-      ],
+    const checkEmail = async (rule, value, callback) => {
+      if (value.length === 0) {
+        callback()
+      }
 
-      password: [
-        { required: true, message: 'Введите пароль', trigger: 'blur' },
-        { min: 8, message: 'Минимальная длина пароля: 8 символов', trigger: 'blur' }
-      ]
+      const isFree = await this.checkEmail();
+
+      if (!isFree) {
+        callback(new Error());
+      }
+
+      callback();
+    };
+
+    const checkPassword = (rule, value, callback) => {
+      if (value.length < 8) {
+        callback(new Error('Минимальная длина пароля: 8 символов'));
+      }
+
+      callback();
     }
-  }),
+
+    return {
+      registerForm: {
+        name: '',
+        secondName: '',
+        email: '',
+        phone: '',
+        password: ''
+      },
+
+      rules: {
+        name: [
+          { min: 2, message: 'Минимальная длина имени 2', trigger: 'blur' },
+          { validator: checkName, message: 'Неверно указано имя', trigger: 'blur' }
+        ],
+
+        secondName: [
+          { min: 2, message: 'Минимальная длина фамилии 2', trigger: 'blur' },
+          { validator: checkName, message: 'Неверно указана фамилия', trigger: 'blur' }
+        ],
+
+        email: [
+          { required: true, message: 'Это поле должно быть заполнено', trigger: 'blur' },
+          { type: 'email', message: 'Неправильно введен email', trigger: ['blur'] },
+          { validator: checkEmail, message: 'Данный email уже зарегистрирован', trigger: 'blur' }
+        ],
+
+        password: [
+          { required: true, message: 'Введите пароль', trigger: 'blur' },
+          { validator: checkPassword, trigger: 'blur' }
+        ]
+      }
+    }
+  },
 
   methods: {
     async submit () {
-      try {
-        this.$refs['regForm'].validate((valid) => {
-          if (!valid) {
-            return false;
-          }
-        });
+      let validation = true;
+      await this.$refs['regForm'].validate((valid) => {
+        validation = valid;
+      });
 
+      if (!validation) {
+        return;
+      }
+
+      try {
         const { data } = await auth.register(this.registerForm)
 
         this.cookies.set('access_token', data.access_token);
@@ -69,6 +112,8 @@ export default {
         const { data } = await auth.checkEmail({
           email: this.registerForm.email
         })
+
+        return data.isFree;
       } catch (error) {
         console.error(error);
       }
@@ -93,10 +138,7 @@ export default {
     </el-form-item>
 
     <el-form-item label="Email" prop="email">
-      <el-input
-        v-model="registerForm.email"
-        @blur="checkEmail"
-      ></el-input>
+      <el-input v-model="registerForm.email"></el-input>
     </el-form-item>
 
     <el-form-item label="Телефон">

@@ -1,6 +1,20 @@
 <script>
+import {useCookies} from "@vueuse/integrations";
+
 export default {
-  name: "TheMenu"
+  name: "TheMenu",
+
+  setup () {
+    const cookies = useCookies(['locale']);
+    return { cookies }
+  },
+
+  methods: {
+    logout () {
+      this.cookies.remove('access_token');
+      this.$router.push({ name: 'auth-main' });
+    }
+  }
 }
 </script>
 
@@ -66,8 +80,9 @@ export default {
     </router-link>
 
     <router-link
-      to=""
+      to="/"
       class="menu__item"
+      @click.prevent="logout"
     >
       <img src="../../assets/icons/log-out.svg" alt="Выход">
       <span>Выход</span>
