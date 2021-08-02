@@ -1,7 +1,8 @@
 FROM node:latest as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+ENV NODE_ENV development
+RUN npm install -g npm@7.20.3
 COPY ./ .
 RUN npm run build
 
