@@ -129,29 +129,41 @@ export default {
     :rules="rules"
     :model="registerForm"
   >
-    <el-form-item label="Имя" prop="name">
-      <el-input v-model="registerForm.name"></el-input>
-    </el-form-item>
-
-    <el-form-item label="Фамилия" prop="secondName">
-      <el-input v-model="registerForm.secondName"></el-input>
-    </el-form-item>
-
-    <el-form-item label="Email" prop="email">
-      <el-input v-model="registerForm.email"></el-input>
-    </el-form-item>
-
-    <el-form-item label="Телефон">
+    <el-form-item prop="name">
       <el-input
-        type="tel"
-        v-model="registerForm.phone"
+        v-model="registerForm.name"
+        placeholder="Имя"
       />
     </el-form-item>
 
-    <el-form-item label="Пароль" prop="password">
+    <el-form-item prop="secondName">
+      <el-input
+        v-model="registerForm.secondName"
+        placeholder="Фамилия"
+      />
+    </el-form-item>
+
+    <el-form-item prop="email">
+      <el-input
+        v-model="registerForm.email"
+        placeholder="Email"
+      />
+    </el-form-item>
+
+    <el-form-item prop="phone">
+      <el-input
+        type="tel"
+        v-model="registerForm.phone"
+        placeholder="Телефон"
+      />
+    </el-form-item>
+
+    <el-form-item prop="password">
       <el-input
         type="password"
-        v-model="registerForm.password"></el-input>
+        v-model="registerForm.password"
+        placeholder="Пароль"
+      />
     </el-form-item>
 
     <div class="auth-register__text auth-register__text_info">* обязательные поля</div>
@@ -174,6 +186,7 @@ export default {
 
   &__text {
     margin-bottom: $indent-large;
+    line-height: 135%;
 
     &_info {
       color: $gray-color;

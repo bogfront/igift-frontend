@@ -64,7 +64,7 @@ export default {
 
     <div
       v-if="$route.name === 'register'"
-      class="text-center"
+      class="text-center auth__info"
     >
       Регистрируясь, Вы подтверждаете, что ознакомились с нашим <a href="">пользовательским соглашением</a>
     </div>
@@ -87,6 +87,8 @@ export default {
     text-decoration: none;
     padding: $indent-xsmall 0;
     color: $dark-color;
+    font-size: $font-size-body;
+    font-weight: $font-weight-semi;
 
     &:not(:last-child) {
       margin-right: $indent-medium;
@@ -126,6 +128,10 @@ export default {
         margin-right: $indent-small;
       }
     }
+  }
+
+  &__info {
+    margin-bottom: $indent-large;
   }
 }
 </style>

@@ -13,6 +13,7 @@ export default {
 
   data: () => ({
     step: 0,
+    isShowPassword: false,
 
     loginForm: {
       email: '',
@@ -48,22 +49,32 @@ export default {
 </script>
 
 <template>
-  <el-form class="auth-login" ref="form" :model="loginForm">
-    <el-form-item
-      v-if="step === 0"
-      label="Email"
-    >
-      <el-input v-model="loginForm.email"></el-input>
+  <el-form
+    class="auth-login"
+    ref="form"
+    :model="loginForm"
+    @submit.prevent
+  >
+    <el-form-item v-if="step === 0">
+      <el-input
+        v-model="loginForm.email"
+        placeholder="Ваш E-mail или номер телефона"
+      ></el-input>
     </el-form-item>
 
-    <el-form-item
-      v-if="step === 1"
-      label="Пароль"
-    >
+    <el-form-item v-if="step === 1">
       <el-input
         v-model="loginForm.password"
-        type="password"
-      />
+        :type="isShowPassword ? 'text' : 'password'"
+        class="auth-login__show-btn"
+      >
+        <template #append>
+          <el-button
+            class="auth-login__eye"
+            @click="isShowPassword = !isShowPassword"
+          ></el-button>
+        </template>
+      </el-input>
     </el-form-item>
 
     <div class="auth-login__forgot">
@@ -75,7 +86,10 @@ export default {
     </div>
 
     <el-form-item>
-      <el-button @click="submit">Войти</el-button>
+      <el-button
+        class="auth-login__btn"
+        @click="submit"
+      >Войти</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -93,10 +107,35 @@ export default {
   }
 
   &__forgot-btn {
+    font-weight: 500;
     display: inline-block;
     padding: 0;
     width: auto !important;
     text-transform: none !important;
+  }
+
+  &__btn {
+    display: block;
+    width: 250px !important;
+    margin: auto;
+  }
+
+  &__eye {
+    background: #ffffff !important;
+    width: 100%;
+    height: 100%;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      background: url('../../assets/icons/eye.svg');
+      background-size: contain;
+      transform: translate(-50%, -50%);
+    }
   }
 }
 </style>
