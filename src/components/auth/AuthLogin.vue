@@ -24,13 +24,31 @@ export default {
   methods: {
     async submit () {
       if (this.step === 0) {
-        this.step++;
+        const { data } = await auth.checkEmail(this.loginForm.email);
+        const isFree = data.data.is_free;
+
+        if (!isFree) {
+          this.step++;
+        } else {
+          ElNotification({
+            message: 'Указанный email не зарегистрирован',
+            duration: 3000,
+            position: 'bottom-right'
+          })
+        }
+
         return;
       }
+
       try {
         const { data } = await auth.login(this.loginForm)
 
-        this.cookies.set('access_token', data.access_token);
+        this.cookies.set('access_token', data.data.token.access_token, {
+          maxAge: data.data.token.expires_in
+        });
+
+        this.$store.commit('setUser', data.data.user);
+
         await this.$router.push({ name: 'dashboard' });
       } catch (error) {
 
@@ -41,6 +59,28 @@ export default {
           position: 'bottom-right'
         })
 
+        console.error(error);
+      }
+    },
+
+    async forgot () {
+      try {
+        const { data } = await auth.checkEmail(this.loginForm.email);
+        const isFree = data.data.is_free;
+
+        if (isFree) {
+          ElNotification({
+            message: 'Указанного email нет в базе',
+            duration: 3000,
+            position: 'bottom-right'
+          })
+
+          return;
+        }
+
+        await auth.forgot(this.loginForm.email)
+        await this.$router.push({ name: 'forgot' })
+      } catch (error) {
         console.error(error);
       }
     }
@@ -57,6 +97,8 @@ export default {
   >
     <el-form-item v-if="step === 0">
       <el-input
+        type="email"
+        name="email"
         v-model="loginForm.email"
         placeholder="Ваш E-mail или номер телефона"
       ></el-input>
@@ -81,7 +123,7 @@ export default {
       <el-button
         type="text"
         class="auth-login__forgot-btn"
-        @click="$router.push({ name: 'forgot' })"
+        @click="forgot"
       >Забыли пароль?</el-button>
     </div>
 

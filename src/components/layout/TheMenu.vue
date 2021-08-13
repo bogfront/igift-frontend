@@ -12,7 +12,7 @@ export default {
   methods: {
     logout () {
       this.cookies.remove('access_token');
-      this.$router.push({ name: 'auth-main' });
+      window.location.href = '';
     }
   }
 }
@@ -80,7 +80,7 @@ export default {
     </router-link>
 
     <router-link
-      to="/"
+      :to="{name: 'login'}"
       class="menu__item"
       @click.prevent="logout"
     >

@@ -44,6 +44,10 @@ const store = createStore({
 
     orderStep (state) {
       return state.orderStep;
+    },
+
+    isAuth (state) {
+      return state.user.loggedIn;
     }
   },
 

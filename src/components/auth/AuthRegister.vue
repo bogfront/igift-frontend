@@ -50,7 +50,7 @@ export default {
     return {
       registerForm: {
         name: '',
-        secondName: '',
+        surname: '',
         email: '',
         phone: '',
         password: ''
@@ -62,7 +62,7 @@ export default {
           { validator: checkName, message: 'Неверно указано имя', trigger: 'blur' }
         ],
 
-        secondName: [
+        surname: [
           { min: 2, message: 'Минимальная длина фамилии 2', trigger: 'blur' },
           { validator: checkName, message: 'Неверно указана фамилия', trigger: 'blur' }
         ],
@@ -93,10 +93,9 @@ export default {
       }
 
       try {
-        const { data } = await auth.register(this.registerForm)
+        await auth.register(this.registerForm)
 
-        this.cookies.set('access_token', data.access_token);
-        await this.$router.push({ name: 'dashboard' });
+        await this.$router.push({ name: 'login' });
       } catch (error) {
         ElNotification({
           title: 'Ошибка регистрации',
@@ -109,11 +108,9 @@ export default {
 
     async checkEmail () {
       try {
-        const { data } = await auth.checkEmail({
-          email: this.registerForm.email
-        })
+        const { data } = await auth.checkEmail(this.registerForm.email);
 
-        return data.isFree;
+        return data.data.is_free;
       } catch (error) {
         console.error(error);
       }
@@ -136,9 +133,9 @@ export default {
       />
     </el-form-item>
 
-    <el-form-item prop="secondName">
+    <el-form-item prop="surname">
       <el-input
-        v-model="registerForm.secondName"
+        v-model="registerForm.surname"
         placeholder="Фамилия"
       />
     </el-form-item>

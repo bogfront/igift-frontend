@@ -8,6 +8,7 @@ import Order from '../pages/Order.page.vue';
 import AuthMain from "../components/auth/AuthMain.vue";
 import AuthLogin from "../components/auth/AuthLogin.vue";
 import AuthForgot from "../components/auth/AuthForgot.vue";
+import AuthResetPassword from "../components/auth/AuthResetPassword.vue";
 import AuthRegister from "../components/auth/AuthRegister.vue";
 import CreateOrderProducts from '../components/create-order/CreateOrderProducts.vue'
 import CreateOrderProductsSubmit from '../components/create-order/CreateOrderProductsSubmit.vue'
@@ -122,6 +123,12 @@ const routes = [
         name: 'forgot',
         component: AuthForgot
       },
+
+      {
+        path: '/auth/reset-password/:token',
+        name: 'reset-password',
+        component: AuthResetPassword
+      }
     ]
   },
 ]

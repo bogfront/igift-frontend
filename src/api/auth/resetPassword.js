@@ -1,7 +1,7 @@
 import { $axios } from '../../utils/axios';
 
-const endpoint = '/auth/email/register';
+const endpoint = '/auth/email/reset-password';
 
-export function register (data) {
+export function resetPassword (data) {
   return $axios.post(endpoint, data);
 }
