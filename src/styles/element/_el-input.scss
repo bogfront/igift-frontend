@@ -25,10 +25,10 @@
 
 .el-input-group__append {
   background: #ffffff !important;
-  border: 1px solid $gray-divider;
+  border: 1px solid $gray-divider !important;
 }
 
 .el-input-group--append .el-input__inner {
-  border-right: none;
+  border-right: none !important;
   border-radius: $radius-medium 0 0 $radius-medium !important;
 }
