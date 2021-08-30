@@ -1,6 +1,6 @@
 import { $axios } from '../../utils/axios';
 
-const endpoint = '/order/create';
+const endpoint = '/product/create';
 
 export function create (data) {
   return $axios.post(endpoint, data);

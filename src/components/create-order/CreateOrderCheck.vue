@@ -1,4 +1,7 @@
 <script>
+import * as api from '../../api';
+import { STATUSES } from '../../utils/constants';
+
 export default {
   name: "CreateOrderCheck",
 
@@ -9,6 +12,10 @@ export default {
   computed: {
     selectedDesignId () {
       return this.$store.getters.orderForm.designId;
+    },
+
+    currentOrder () {
+      return this.$store.getters.currentOrder;
     }
   },
 
@@ -18,7 +25,13 @@ export default {
 
   methods: {
     async submit () {
-      await this.$store.dispatch('createOrder');
+      try {
+        await api.orders.changeStatus(this.currentOrder._id, STATUSES.CREATED);
+
+        await this.$router.push({ name: 'create-order-thanks' });
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 }

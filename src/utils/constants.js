@@ -9,7 +9,8 @@ export const STATUSES = {
   DRAFT: 'draft',
   CANCEL: 'cancel',
   PARTLY_CANCEL: 'partly_cancel',
-  REDEMPTION: 'redemption'
+  REDEMPTION: 'redemption',
+  PAID: 'paid'
 }
 
 export const STATUSES_RUS = {

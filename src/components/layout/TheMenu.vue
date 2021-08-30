@@ -12,6 +12,7 @@ export default {
   methods: {
     logout () {
       this.cookies.remove('access_token');
+      this.cookies.remove('user_email');
       window.location.href = '';
     }
   }

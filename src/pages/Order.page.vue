@@ -1,6 +1,7 @@
 <script>
 import * as api from "../api";
 import { formatDate } from "../utils/date";
+import packing from '../storage/packing';
 
 export default {
   name: "Order",
@@ -16,15 +17,15 @@ export default {
       }
 
       return this.order.products.map(item => item?.name).join(', ');
+    },
+
+    wrapCover () {
+      return packing.find(item => '' + item.id === this.order.products[0]?.wrap)?.cover;
     }
   },
 
   mounted() {
     this.loadOrder();
-  },
-
-  created() {
-    console.log(document.referrer);
   },
 
   methods: {
@@ -34,7 +35,7 @@ export default {
       }
 
       const { data } = await api.orders.getOrder(this.$route.params.id);
-      this.order = data;
+      this.order = data.data;
     },
 
     format (date) {
@@ -54,13 +55,17 @@ export default {
     <div class="order__date">{{ format(order.createdAt) }}</div>
 
     <div class="order__gift">
-      <div class="order__gift-design"></div>
+      <div class="order__gift-design">
+        <img
+          :src="wrapCover ?? '/src/assets/giftboxes/1/gift_boxes02877-1.jpg'"
+        />
+      </div>
 
       <div class="order__gift-info">
         <div>
-          <b>{{ order.recipient.name }}</b>, {{ order.recipient.address }}, {{ order.recipient.city }}
+          <b>{{ order.receiver.name }}</b>, {{ order.receiver.address }}, {{ order.receiver.city }}
         </div>
-        <div>{{ order.recipient.deliveryTime }}</div>
+        <div>{{ order.receiver?.deliveryTime }}</div>
 
         <strong>Внутри:</strong>
         <div>{{ products }}</div>
@@ -106,6 +111,13 @@ export default {
     margin: 0 0 $indent-medium;
     border-radius: $radius-medium;
     background: rgba($pink-color, .85);
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 
   &__gift-info {

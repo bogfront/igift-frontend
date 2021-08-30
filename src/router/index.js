@@ -16,6 +16,7 @@ import CreateOrderProductsSubmit from '../components/create-order/CreateOrderPro
 import CreateOrderDesign from '../components/create-order/CreateOrderDesign.vue'
 import CreateOrderRecipient from '../components/create-order/CreateOrderRecipient.vue'
 import CreateOrderCheck from '../components/create-order/CreateOrderCheck.vue'
+import CreateOrderThanks from '../components/create-order/CreateOrderThanks.vue'
 
 import store from '../store'
 
@@ -81,6 +82,11 @@ const routes = [
         path: '/order/create/check',
         name: 'create-order-check',
         component: CreateOrderCheck
+      },
+      {
+        path: '/order/create/thanks',
+        name: 'create-order-thanks',
+        component: CreateOrderThanks
       }
     ]
   },

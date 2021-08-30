@@ -22,12 +22,17 @@ const store = createStore({
 
     orderStatusFilter: '',
     orders: [],
-    orderStep: 0
+    orderStep: 0,
+    currentOrder: null
   },
 
   getters: {
     auth (state) {
       return state.user
+    },
+
+    userId (state) {
+      return state.user.data.id
     },
 
     orderForm (state) {
@@ -48,6 +53,10 @@ const store = createStore({
 
     isAuth (state) {
       return state.user.loggedIn;
+    },
+
+    currentOrder (state) {
+      return state.currentOrder
     }
   },
 
@@ -87,23 +96,27 @@ const store = createStore({
 
     setOrderStep (state, step) {
       state.orderStep = step;
+    },
+
+    setCurrentOrder (state, order) {
+      state.currentOrder = order;
     }
   },
 
   actions: {
     async loadUser ({commit}) {
       const accessToken = cookies.get('access_token');
+      const userEmail = cookies.get('user_email');
 
-      if (!accessToken) {
+      if (!accessToken && !userEmail) {
         return null;
       } else {
         $axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       }
 
       try {
-        const { data } = await api.user.profile();
-
-        commit('setUser', data);
+        const { data } = await api.user.profile(userEmail);
+        commit('setUser', data.data.data);
       } catch (error) {
         console.error(error);
       }
@@ -133,14 +146,10 @@ const store = createStore({
 
     async loadOrders ({ state, commit }) {
       try {
-        const params = {};
-        if (state.orderStatusFilter) {
-          params.status = state.orderStatusFilter;
-        }
+        const userId = state.user.data.id;
+        const { data } = await api.orders.getOrders(userId, state.orderStatusFilter ?? '');
 
-        const { data } = await api.orders.getOrders(params);
-
-        commit('setOrders', data);
+        commit('setOrders', data.data);
       } catch (error) {
         console.error(error);
       }

@@ -1,5 +1,7 @@
 <script>
 import packing from "../../storage/packing.js";
+import {ElNotification} from 'element-plus';
+import * as api from '../../api'
 
 export default {
   name: "CreateOrderDesign",
@@ -14,6 +16,10 @@ export default {
   computed: {
     selectedDesignId () {
       return this.$store.getters.orderForm.designId;
+    },
+
+    currentOrder () {
+      return this.$store.getters.currentOrder;
     },
 
     packing () {
@@ -33,10 +39,29 @@ export default {
       this.showDialog = false;
     },
 
-    submit () {
-      this.$store.commit('setOrderDesignComment', this.comment);
+    async submit () {
+      if (!this.selectedDesignId) {
+        ElNotification({
+          message: 'Выберите одну из упаковок',
+          duration: 3000,
+          position: 'bottom-right'
+        })
 
-      this.$router.push({ name: 'create-order-recipient' });
+        return;
+      }
+
+      try {
+        await api.product.updateWrap({
+          productId: this.currentOrder.products[0]._id,
+          wrapId: this.selectedDesignId,
+          comment: this.comment
+        })
+
+        this.$store.commit('setOrderDesignComment', this.comment);
+        this.$router.push({ name: 'create-order-recipient' });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }

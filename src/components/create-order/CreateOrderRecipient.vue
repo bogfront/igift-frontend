@@ -1,4 +1,6 @@
 <script>
+import * as api from '../../api'
+
 export default {
   name: "CreateOrderRecipient",
 
@@ -15,6 +17,12 @@ export default {
     cities: [],
     loadingCity: false
   }),
+
+  computed: {
+    currentOrder () {
+      return this.$store.getters.currentOrder;
+    }
+  },
 
   mounted () {
     this.$store.commit('setOrderStep', 1);
@@ -34,10 +42,24 @@ export default {
       this.loadingCity = false;
     },
 
-    submitRecipient () {
-      this.$store.commit('setRecipient', this.recipient);
+    async submitRecipient () {
+      try {
+        await api.orders.comment({
+          orderId: this.currentOrder._id,
+          comment: this.recipient.comment,
+          receiver: {
+            name: this.recipient.name,
+            phone: this.recipient.phone,
+            city: this.recipient.city,
+            address: this.recipient.address
+          }
+        });
 
-      this.$router.push({ name: 'create-order-check' });
+        this.$store.commit('setRecipient', this.recipient);
+        await this.$router.push({ name: 'create-order-check' });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }
@@ -49,23 +71,26 @@ export default {
 
     <el-form>
       <el-form-item
-        label="Имя получателя"
         class="create-order__item"
         required
       >
-        <el-input v-model="recipient.name"/>
+        <el-input
+          v-model="recipient.name"
+          placeholder="Имя получателя"
+        />
       </el-form-item>
 
       <el-form-item
-        label="Телефон"
         class="create-order__item"
         required
       >
-        <el-input v-model="recipient.phone"/>
+        <el-input
+          v-model="recipient.phone"
+          placeholder="Телефон"
+        />
       </el-form-item>
 
       <el-form-item
-        label="Город"
         class="create-order__item"
         required
       >
@@ -73,7 +98,7 @@ export default {
           v-model="recipient.city"
           filterable
           remote
-          placeholder="город получателя"
+          placeholder="Город"
           :remote-method="suggestCity"
           :loading="loadingCity"
           autocomplete="off"
@@ -89,14 +114,13 @@ export default {
       </el-form-item>
 
       <el-form-item
-        label="Адрес"
         class="create-order__item"
       >
         <el-select
           v-model="recipient.address"
           filterable
           remote
-          placeholder="улица/дом/квартира"
+          placeholder="Адрес"
           :remote-method="suggestCity"
           :loading="loadingCity"
           autocomplete="off"
@@ -112,11 +136,11 @@ export default {
       </el-form-item>
 
       <el-form-item
-        label="Время доставки"
         class="create-order__item"
       >
         <el-select
           v-model="recipient.deliveryTime"
+          placeholder="Время доставки"
           class="create-order__select"
         >
           <el-option
@@ -137,13 +161,13 @@ export default {
       </el-form-item>
 
       <el-form-item
-        label="Напишите пожелание"
         class="create-order__item">
         <el-input
+          v-model="recipient.comment"
           type="textarea"
           :autosize="{ minRows: 6, maxRows: 10}"
-          v-model="recipient.comment">
-        </el-input>
+          placeholder="Напишите пожелание"
+        />
       </el-form-item>
 
       <el-button

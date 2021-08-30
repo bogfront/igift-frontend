@@ -1,6 +1,6 @@
 import { $axios } from '../../utils/axios';
 
-const endpoint = '/orders/metadata';
+const endpoint = '/product/url-data';
 
 export function urlMetadata (params) {
   return $axios.post(endpoint, params);

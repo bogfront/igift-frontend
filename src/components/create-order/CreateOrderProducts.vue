@@ -21,7 +21,7 @@ export default {
         uri: '',
         name: '',
         count: 1,
-        comment: '',
+        description: '',
         image: ''
       },
 
@@ -49,23 +49,25 @@ export default {
       }
 
       try {
+        this.productForm.name = '';
+        this.productForm.image = '';
+
         const { data } = await api.orders.urlMetadata({ url });
 
         if (data) {
-          this.productForm.name = data.title;
-          this.productForm.image = data.image;
+          this.productForm.name = data.data?.keywords?.split(',')[0] || data.data.title;
+          this.productForm.image = data.data.image;
         }
       } catch (error) {
         console.error(error);
       }
     },
 
-    submitProducts () {
+    async submitProducts () {
+      let isValid = true;
+
       this.$refs.productForm.validate((valid) => {
-        if (valid) {
-          this.$store.commit('setOrderProducts', this.productForm);
-          this.$router.push({ name: 'create-order-products-submit' })
-        } else {
+        if (!valid) {
           ElNotification({
             title: 'Неверно заполнена форма',
             message: 'Проверьте правильность заполнения полей',
@@ -73,9 +75,33 @@ export default {
             position: 'bottom-right'
           })
 
+          isValid = false;
+
           return false;
         }
       });
+
+      try {
+        const ownerId = this.$store.getters.userId;
+        debugger
+        const { data: product } = await api.product.create({
+          url: this.productForm.uri,
+          name: this.productForm.name,
+          count: +this.productForm.count,
+          description: this.productForm.description
+        });
+
+        const { data: order } = await api.orders.create({
+          products: [ product.data ],
+          ownerId
+        })
+
+        this.$store.commit('setOrderProducts', product.data);
+        this.$store.commit('setCurrentOrder', order.data);
+        await this.$router.push({ name: 'create-order-products-submit' });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }
@@ -98,31 +124,31 @@ export default {
       >
 
       <el-form-item
-        label="Скопируйте URL ссылку на товар"
         class="create-order__item"
         prop="uri"
       >
         <el-input
           v-model="productForm.uri"
+          placeholder="Скопируйте URL ссылку на товар"
           @blur="getProductData(productForm.uri)"
         />
       </el-form-item>
 
       <el-form-item
-        label="Название товара"
         class="create-order__item"
         prop="name"
       >
-        <el-input v-model="productForm.name"/>
+        <el-input
+          v-model="productForm.name"
+          placeholder="Название товара"
+        />
       </el-form-item>
 
-      <el-form-item
-        labe="Количество товаров"
-        class="create-order__item"
-      >
+      <el-form-item class="create-order__item">
         <el-select
           v-model="productForm.count"
           class="create-order__select"
+          placeholder="Количество товаров"
         >
           <el-option
             v-for="(item, index) in new Array(10)"
@@ -133,15 +159,13 @@ export default {
         </el-select>
       </el-form-item>
 
-      <el-form-item
-        label="Напишите пожелание"
-        class="create-order__item"
-      >
+      <el-form-item class="create-order__item">
         <el-input
           type="textarea"
           :autosize="{ minRows: 6, maxRows: 10}"
-          v-model="productForm.comment">
-        </el-input>
+          v-model="productForm.description"
+          placeholder="Напишите пожелание"
+        />
       </el-form-item>
 
       <el-button @click="submitProducts">Продолжить</el-button>

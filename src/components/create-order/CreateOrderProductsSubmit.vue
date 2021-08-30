@@ -13,6 +13,12 @@ export default {
     giftsCount: 1
   }),
 
+  computed: {
+    orderProducts () {
+      return this.$store.getters.currentOrder?.products ?? [];
+    }
+  },
+
   mounted () {
     this.$store.commit('setOrderStep', 0);
   },
@@ -36,9 +42,10 @@ export default {
         <div>
           <el-radio v-model="giftsCount" :label="1">Это один и тот же подарок</el-radio>
         </div>
-<!--        <div>-->
-<!--          <el-radio v-model="giftsCount" :label="2">Хочу упаковать несколько подарков</el-radio>-->
-<!--        </div>-->
+
+        <div v-if="orderProducts.length > 1">
+          <el-radio v-model="giftsCount" :label="2">Хочу упаковать несколько подарков</el-radio>
+        </div>
       </el-form-item>
 
       <el-button

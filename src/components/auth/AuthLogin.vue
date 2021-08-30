@@ -44,12 +44,18 @@ export default {
         const { data } = await auth.login(this.loginForm)
 
         this.cookies.set('access_token', data.data.token.access_token, {
-          maxAge: data.data.token.expires_in
+          maxAge: data.data.token.expires_in,
+          path: '/'
+        });
+
+        this.cookies.set('user_email', data.data.user.email, {
+          maxAge: data.data.token.expires_in,
+          path: '/'
         });
 
         this.$store.commit('setUser', data.data.user);
 
-        await this.$router.push({ name: 'dashboard' });
+        window.location.href = '/';
       } catch (error) {
 
         ElNotification({
