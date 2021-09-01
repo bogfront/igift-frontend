@@ -1,5 +1,6 @@
 <script>
 import {useCookies} from "@vueuse/integrations";
+import {$axios} from '../../utils/axios';
 
 export default {
   name: "TheMenu",
@@ -13,6 +14,7 @@ export default {
     logout () {
       this.cookies.remove('access_token');
       this.cookies.remove('user_email');
+      $axios.defaults.headers.common['Authorization'] = '';
       window.location.href = '';
     }
   }
