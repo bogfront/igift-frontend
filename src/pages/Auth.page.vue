@@ -43,7 +43,7 @@ export default {
         </div>
       </div>
 
-      <div class="auth__icons">
+      <div v-if="false" class="auth__icons">
         <el-button plain>
           <img src="../assets/icons/vk.svg" alt="vk">
         </el-button>
