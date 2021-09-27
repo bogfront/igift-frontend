@@ -145,7 +145,7 @@ export default {
     <el-form-item prop="email">
       <el-input
         v-model="registerForm.email"
-        placeholder="Email"
+        placeholder="Email *"
       />
     </el-form-item>
 
@@ -161,7 +161,7 @@ export default {
             <el-input
         v-model="registerForm.password"
         :type="isShowPassword ? 'text' : 'password'"
-        placeholder="Пароль"
+        placeholder="Пароль *"
         class="auth-login__show-btn"
       >
         <template #append>

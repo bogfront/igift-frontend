@@ -129,7 +129,7 @@ export default {
       >
         <el-input
           v-model="productForm.uri"
-          placeholder="Скопируйте URL ссылку на товар"
+          placeholder="Скопируйте URL ссылку на товар *"
           @blur="getProductData(productForm.uri)"
         />
       </el-form-item>
@@ -140,7 +140,7 @@ export default {
       >
         <el-input
           v-model="productForm.name"
-          placeholder="Название товара"
+          placeholder="Название товара *"
         />
       </el-form-item>
 

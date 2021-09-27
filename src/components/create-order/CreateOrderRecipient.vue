@@ -76,7 +76,7 @@ export default {
       >
         <el-input
           v-model="recipient.name"
-          placeholder="Имя получателя"
+          placeholder="Имя получателя *"
         />
       </el-form-item>
 
@@ -86,7 +86,7 @@ export default {
       >
         <el-input
           v-model="recipient.phone"
-          placeholder="Телефон"
+          placeholder="Телефон *"
         />
       </el-form-item>
 
@@ -98,7 +98,7 @@ export default {
           v-model="recipient.city"
           filterable
           remote
-          placeholder="Город"
+          placeholder="Город *"
           :remote-method="suggestCity"
           :loading="loadingCity"
           autocomplete="off"
