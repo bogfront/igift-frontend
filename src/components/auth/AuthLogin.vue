@@ -114,6 +114,7 @@ export default {
       <el-input
         v-model="loginForm.password"
         :type="isShowPassword ? 'text' : 'password'"
+        placeholder="Введите ваш пароль"
         class="auth-login__show-btn"
       >
         <template #append>
