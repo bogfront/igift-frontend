@@ -56,6 +56,8 @@ export default {
         password: ''
       },
 
+      isShowPassword: false,
+
       rules: {
         name: [
           { min: 2, message: 'Минимальная длина имени 2', trigger: 'blur' },
@@ -156,11 +158,19 @@ export default {
     </el-form-item>
 
     <el-form-item prop="password">
-      <el-input
-        type="password"
+            <el-input
         v-model="registerForm.password"
+        :type="isShowPassword ? 'text' : 'password'"
         placeholder="Пароль"
-      />
+        class="auth-login__show-btn"
+      >
+        <template #append>
+          <el-button
+            class="auth-register__eye"
+            @click="isShowPassword = !isShowPassword"
+          ></el-button>
+        </template>
+      </el-input>
     </el-form-item>
 
     <div class="auth-register__text auth-register__text_info">* обязательные поля</div>
@@ -194,6 +204,24 @@ export default {
     display: block;
     width: 250px !important;
     margin: auto;
+  }
+
+  &__eye {
+    background: #ffffff !important;
+    width: 100%;
+    height: 100%;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      background: url('../../assets/icons/eye.svg');
+      background-size: contain;
+      transform: translate(-50%, -50%);
+    }
   }
 }
 </style>
