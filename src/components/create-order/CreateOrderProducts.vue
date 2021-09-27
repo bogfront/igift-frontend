@@ -83,7 +83,7 @@ export default {
 
       try {
         const ownerId = this.$store.getters.userId;
-        debugger
+
         const { data: product } = await api.product.create({
           url: this.productForm.uri,
           name: this.productForm.name,
