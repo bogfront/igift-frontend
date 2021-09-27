@@ -10,5 +10,5 @@ export function validURL(str) {
 }
 
 export function validateName(str) {
-  return /^[A-Za-zА-Яа-я]+$/.test(str);
+  return /^[A-Za-zА-Яа-я\s\-]+$/.test(str);
 }
