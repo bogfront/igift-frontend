@@ -6,13 +6,23 @@ export default {
 
   components: {
     CreateOrderSteps
+  },
+
+  computed: {
+    showSteps () {
+      if (this.$route.name === 'create-order-thanks') {
+        return false;
+      }
+
+      return true;
+    }
   }
 }
 </script>
 
 <template>
   <div class="container">
-    <CreateOrderSteps />
+    <CreateOrderSteps v-if="showSteps" />
 
     <router-view />
   </div>
