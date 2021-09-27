@@ -1,5 +1,6 @@
 <script>
 import * as api from '../../api'
+import {ElNotification} from 'element-plus';
 
 export default {
   name: "CreateOrderRecipient",
@@ -15,7 +16,21 @@ export default {
     },
 
     cities: [],
-    loadingCity: false
+    loadingCity: false,
+
+    rules: {
+      name: [
+        { required: true, message: 'Заполните имя получателя', trigger: 'blur' }
+      ],
+
+      phone: [
+        { required: true, message: 'Заполните телефон', trigger: 'blur' }
+      ],
+
+      city: [
+        { required: true, message: 'Заполните город', trigger: 'blur' }
+      ]
+    }
   }),
 
   computed: {
@@ -43,6 +58,26 @@ export default {
     },
 
     async submitRecipient () {
+      let isValid = true;
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          ElNotification({
+            title: 'Неверно заполнена форма',
+            message: 'Проверьте правильность заполнения полей',
+            duration: 3000,
+            position: 'bottom-right'
+          })
+
+          isValid = false;
+
+          return false;
+        }
+      });
+
+      if (!isValid) {
+        return;
+      }
+
       try {
         await api.orders.comment({
           orderId: this.currentOrder._id,
@@ -69,10 +104,14 @@ export default {
   <div class="create-order__content">
     <h2 class="create-order__head">Кому доставить подарок?</h2>
 
-    <el-form>
+    <el-form
+      :model="recipient"
+      :rules="rules"
+      ref="form"
+    >
       <el-form-item
         class="create-order__item"
-        required
+        prop="name"
       >
         <el-input
           v-model="recipient.name"
@@ -82,7 +121,7 @@ export default {
 
       <el-form-item
         class="create-order__item"
-        required
+        prop="phone"
       >
         <el-input
           v-model="recipient.phone"
@@ -92,7 +131,7 @@ export default {
 
       <el-form-item
         class="create-order__item"
-        required
+        prop="city"
       >
         <el-select
           v-model="recipient.city"
@@ -136,6 +175,7 @@ export default {
       </el-form-item>
 
       <el-form-item
+        v-if="false"
         class="create-order__item"
       >
         <el-select

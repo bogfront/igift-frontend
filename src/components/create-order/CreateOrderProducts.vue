@@ -81,6 +81,10 @@ export default {
         }
       });
 
+      if (!isValid) {
+        return;
+      }
+
       try {
         const ownerId = this.$store.getters.userId;
 
